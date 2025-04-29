@@ -103,3 +103,20 @@ await app.init({
 ```
 
 window.devicePixelRatio을 맥북프로에서 사용해보니 2가 나오고 다른 모니터에서 사용해보니 1이 나왔다.
+
+## 애니메이션 추가하기
+
+app.ticker.add는 계속 반복해서 실행되는 함수인데 여기에서 애니메이션을 추가할 수 있다.
+
+```js
+app.ticker.add((delta) => {
+  // deltaTime은 함수가 실행되는 간격, 디바이스마다 다름
+  bunny.x += 2 * delta.deltaTime;
+  bunny.rotation += 0.1 * delta.deltaTime;
+  if (bunny.x > app.screen.width) {
+    bunny.x = 0;
+  }
+});
+```
+
+기계마다 함수를 실행시킬 수 있는 속도가 다른데 그걸 deltaTime으로 보정해준다.(deltaTime은 실행 간격을 나타내는 값인데 빠르게 실행되면 상수값에 곱해서 값을 줄여주고, 느리게 실행되면 상수값에 곱해서 값을 늘려주면 사용자가 느껴지는 속도는 비슷해진다.)
