@@ -120,3 +120,22 @@ app.ticker.add((delta) => {
 ```
 
 기계마다 함수를 실행시킬 수 있는 속도가 다른데 그걸 deltaTime으로 보정해준다.(deltaTime은 실행 간격을 나타내는 값인데 빠르게 실행되면 상수값에 곱해서 값을 줄여주고, 느리게 실행되면 상수값에 곱해서 값을 늘려주면 사용자가 느껴지는 속도는 비슷해진다.)
+
+## 그룹화 하기
+
+Container를 통해서 그룹화 할 수 있다.
+
+```js
+import { Container } from "pixi.js";
+
+// 컨테이너를 만들고 앱에 추가한다.
+const container = new Container();
+app.stage.addChild(container);
+
+// app.stage에 추가하는 것이 아니라 컨테이너에 추가한다.
+container.addChild(bunny);
+container.addChild(rect);
+```
+
+컨테이너를 만들어서 만들어진 그래픽이나 스프라이트를 컨테이너에 추가하면 그룹화 할 수 있다.  
+그룹화 후에는 컨테이너의 위치를 옮기거나 액션을 줄 수 있다.
