@@ -247,3 +247,49 @@ vampire.on("pointertap", () => {
 ```
 
 특정 행동을 할 때 넣으려면 stop과 play를 사용하면 된다.
+
+## 배경 추가하기
+
+배경을 추가할 떈 TilingSprite을 사용하면 된다.
+
+```js
+import { Assets, TilingSprite } from "pixi.js";
+
+const bgTexture = await Assets.load("/background.png");
+const bgSprite = new TilingSprite({
+  texture: bgTexture,
+  width: app.screen.width,
+  height: app.screen.height,
+});
+app.stage.addChild(bgSprite);
+```
+
+width나 height에 맞게 타일처럼 반복되게 그려준다.
+
+```js
+function adjustTileScale() {
+  // 배경 높이를 윈도우 높이만큼 줄 수 있게 스케일 구하는 공식
+  const scale = window.innerHeight / bgTexture.height;
+  bgSprite.tileScale.set(scale);
+
+  //윈도우 사이즈가 바뀔 때 실행될 수 있게 width와 height를 설정
+  bgSprite.width = window.innerWidth;
+  bgSprite.height = window.innerHeight;
+
+  vampire.y = app.screen.height * 0.95 - vampire.height;
+}
+adjustTileScale();
+
+window.addEventListener("resize", adjustTileScale);
+```
+
+scale을 조정해서 height 위치에 맞춰주고 bg의 width와 height도 다시 설정해준다.
+
+```js
+app.ticker.add((delta) => {
+  // tilePosition.x를 사용하면 자연스럽게 타일의 위치가 밀린다.
+  bgSprite.tilePosition.x -= 1 * delta.deltaTime;
+});
+```
+
+배경을 이동시킬 땐 tilePosition을 사용하면 자연스럽게 이동한다.
