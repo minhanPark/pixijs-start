@@ -219,3 +219,31 @@ vampire.onComplete = () => {
 ```
 
 사용자의 인터랙션에 의해서 작동하게 하려면 위처럼 이벤트를 걸어주면 된다.
+
+## 소리 추가하기
+
+강의에서는 new Audio를 사용했는데 나한텐 소리가 안들려서 pixi/sound를 사용했다.
+
+```bash
+npm i @pixi/sound
+```
+
+위의 명령어로 설치하면 된다.
+
+```js
+import { sound } from "@pixi/sound";
+
+sound.add("knife-slice", "/knife-slice.mp3");
+```
+
+위와 같은 형태로 소리를 추가할 수 있다.
+
+```js
+vampire.on("pointertap", () => {
+  // 소리가 중복되서 나타나지 말고 멈췄다가 다시 시작하라는 의미로 넣음
+  sound.stop("knife-slice");
+  sound.play("knife-slice");
+});
+```
+
+특정 행동을 할 때 넣으려면 stop과 play를 사용하면 된다.
