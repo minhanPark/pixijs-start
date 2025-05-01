@@ -168,3 +168,54 @@ bunny.filters = bluFilter;
 ```
 
 다 생성자 함수기 때문에 미리 생성하고 스프라이트의 filters 속성에 넣어주면 된다.
+
+## 스프라이트에 애니메이션 주기
+
+그냥 스프라이트도 있지만 애니메이션을 주려면 AnimatedSprite을 활용해야 하고 sprite sheet를 가지고 있어야한다. 즉 움직임이 연속되게 보일 여러장을 가지고 있어야한다.
+
+```js
+const texture = await Assets.load("/Attack.png");
+
+const frames = Array.from(
+  { length: 5 },
+  (_, i) =>
+    new Texture({
+      source: texture,
+      frame: new Rectangle(i * 128, 0, 128, 128),
+    })
+);
+```
+
+무료 sprite sheet를 가지고와서 프레임에 맞게 잘라주었다.
+
+```js
+const vampire = new AnimatedSprite(frames);
+app.stage.addChild(vampire);
+```
+
+그리고 만들어진 프레임 배열을 AnimatedSprite에 넣어주면 된다. 그리고 app에 추가하자.
+
+```js
+// 속도 조절
+vampire.animationSpeed = 0.2;
+// 반복 중지
+vampire.loop = false;
+```
+
+기본값이 빠른 속도로 반복되는 것이기 때문에 반복하지 않도록 하고 애니메이션 속도를 낮춰줬다.
+
+```js
+vampire.eventMode = "static";
+vampire.cursor = "pointer";
+vampire.on("pointertap", () => {
+  // 특정 프레임으로 이동하여 애니메이션 스프라이트 재생을 시작
+  vampire.gotoAndPlay(0);
+});
+// 애니메이션 스프라이트 재생이 완료되면 호출할 지정함수
+vampire.onComplete = () => {
+  // 애니메이션 스프라이트를 중지하고 특정 프레임으로 이동
+  vampire.gotoAndStop(0);
+};
+```
+
+사용자의 인터랙션에 의해서 작동하게 하려면 위처럼 이벤트를 걸어주면 된다.
